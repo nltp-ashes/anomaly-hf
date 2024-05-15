@@ -153,25 +153,43 @@ function UIFurnitureLight:Close()
 end
 
 -------
+
 function toggle_light(obj_id)
 	local section = alife_object(obj_id):section_name()
 	local is_on = hf_obj_manager.get_data(obj_id).is_on
 	if is_on then
 		hf_obj_manager.update_data(obj_id, {is_on=false})
-	else
-		local req_matches = ini_sys:r_bool_ex(section, "require_matches") or false
-		if req_matches then
-			local obj_item = db.actor:object("matches") or db.actor:object("box_matches")
-			if obj_item then
-				utils_item.discharge(obj_item)
-				hf_obj_manager.update_data(obj_id, {is_on=true})
+		return
+	end
+
+	local required_tools = parse_list(ini_sys, section, "require_tool")
+
+	-- Check for legacy config key (backwards compatibility)
+	local require_matches = ini_sys:r_bool_ex(section, "require_matches") or false
+	if require_matches then
+		table.insert(required_tools, "matches")
+		table.insert(required_tools, "box_matches")
+	end
+
+	if is_empty(required_tools) then
+		hf_obj_manager.update_data(obj_id, {is_on=true})
+		return
+	end
+
+	for _,tool in pairs(required_tools) do
+		local obj_item = db.actor:object(tool)
+		if obj_item then
+			if utils_item.is_degradable(obj_item) then
+				utils_item.degrade(obj_item, 0.05)
 			else
-				actor_menu.set_msg(1, game.translate_string("st_ui_campfire_prereq"),3)
+				utils_item.discharge(obj_item)
 			end
-		else
 			hf_obj_manager.update_data(obj_id, {is_on=true})
+			return
 		end
 	end
+
+	actor_menu.set_msg(1, game.translate_string("st_ui_campfire_prereq"), 3)
 end
 
 function start_dialog(obj_id)
