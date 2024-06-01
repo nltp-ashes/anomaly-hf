@@ -100,7 +100,10 @@ end
 function hf_binder_wrapper:pickup()
 	local item_section = ini_sys:r_string_ex(self.object:section(), "item_section")
 	local condition = self.fuel
-	alife_create_item(item_section, db.actor, {cond=condition})
+	alife_create_item(item_section, db.actor, {cond=condition}) -- Maybe transfer all data to new item? Probably depends on item type tho
+
+    -- Clean up HF-related data
+    hf_obj_manager.cleanup_data(self.object:id())
 	alife_release(self.object)
 
     return true

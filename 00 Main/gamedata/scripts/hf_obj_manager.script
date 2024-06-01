@@ -52,6 +52,12 @@ function save_state(mdata)
     end
 end
 
+function cleanup_data(id)
+    SendScriptCallback("hf_on_before_furniture_release", id)
+
+    delete_data(id)
+end
+
 function on_game_start()
 	RegisterScriptCallback("save_state",save_state)
 end
