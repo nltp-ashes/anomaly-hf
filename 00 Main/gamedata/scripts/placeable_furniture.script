@@ -500,10 +500,6 @@ end
 ---@class placeable_furniture.UIAdvancedControls
 GUI = nil -- instance, don't touch
 function open_gui()
-	if not DEV_DEBUG then
-		return
-	end
-	
 	hide_hud_inventory()
 
 	if (not GUI) then
