@@ -8,7 +8,7 @@ function get_wrapper(id)
 
     local binder = obj:binded_object()
     if not binder then return end
-    
+
     return binder.wrapper
 end
 
@@ -37,7 +37,7 @@ end
 function get_function_from_field(obj, field)
     local func_string = ini_sys:r_string_ex(obj:section(), field)
     if not func_string then return end
-    
+
     local func_split = {}
     for s in string.gmatch(func_string, "([^.]+)") do
         table.insert(func_split, s)
@@ -51,13 +51,9 @@ end
 class "hf_binder_wrapper"
 -- Class constructor
 function hf_binder_wrapper:__init(obj)
-    local binder = base_binder(obj)
-    binder.wrapper = self
+    self.binder = base_binder(obj)
+    self.binder.wrapper = self
 
-    obj:bind_object(binder)
-
-    self.binder = binder
-    
     ---@type game_object
     self.object = obj
 
@@ -68,8 +64,9 @@ end
 function hf_binder_wrapper:update(delta)
 end
 
-function hf_binder_wrapper:net_spawn()
+function hf_binder_wrapper:net_spawn(se_abstract)
     CreateTimeEvent("hf_freeze", self.object:id(), 0, freeze_obj, self.object:id())
+    return true
 end
 
 function hf_binder_wrapper:net_destroy()
@@ -105,7 +102,7 @@ function hf_binder_wrapper:pickup()
 	local condition = self.fuel
 	alife_create_item(item_section, db.actor, {cond=condition})
 	alife_release(self.object)
-    
+
     return true
 end
 
@@ -169,7 +166,7 @@ function base_binder:net_spawn(se_abstract)
     end
 
     if self.wrapper and self.wrapper.net_spawn then
-        self.wrapper:net_spawn()
+        return self.wrapper:net_spawn(se_abstract)
     end
 
     return true
@@ -177,11 +174,12 @@ end
 -- Net destroy
 function base_binder:net_destroy()
     self:save_data()
-	object_binder.net_destroy(self)
 
     if self.wrapper and self.wrapper.net_destroy then
         self.wrapper:net_destroy()
     end
+
+    object_binder.net_destroy(self)
 end
 -- Standart function for save
 function base_binder:net_save_relevant()
