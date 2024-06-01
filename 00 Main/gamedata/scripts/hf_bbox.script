@@ -9,7 +9,7 @@ end
 
 function bbox_collider:UpdateVertices()
     aol_bbox.bbox_collider.UpdateVertices(self)
-    local y_offset = 0.05
+    local y_offset = 0.02
 
     for i=1,4 do
         self.vertices[i].y = self.vertices[i].y +y_offset

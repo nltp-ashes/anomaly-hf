@@ -56,7 +56,7 @@ local player_dir = nil
 local player_dist = nil
 
 local bbox = nil
-local bbox_drawer = aol_bshape.bshape_renderer()
+local bbox_drawer = hf_bshape.bshape_renderer()
 
 ---------------------
 -- State Management
