@@ -1,3 +1,22 @@
+# 2.3.0
+## Features
+- From Thial, add new wireframe preview gizmo for placement
+  - Replaces the original preview which used particles
+- From NLTP_ASHES, add `require_tool` property for lighting gas lamps with different tools
+
+## Bug Fixes
+- Stop NPCs from picking up weapons in the Weapon Displays
+- Add FDDA patch to prevent player picking up items on weapon displays
+  - Should prevent "weapon duplication"
+- Fix stash capacity script
+  - Prevents drag and dropping items into over-capacity stashes
+  - Should avoid a potential crash with `nil` object
+- Enable Advanced Controls when not in debug mode
+
+# 2.2.1
+## Hotfix
+- Fix crash when loading old saves
+
 # 2.2.0
 ## Features
 - Spawn world objects per-entry, instead of once per save
