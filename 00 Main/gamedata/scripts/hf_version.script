@@ -27,6 +27,24 @@ end
 -- Migration Functions
 ------------------------
 
+-- 2.2.1 -> 2.3.0
+-- Make displayed guns invisible to AI, stopping them from picking them up
+local function fix_racked_weapons()
+    if not weapon_showcase then return end
+
+    for case_id, item_ids in pairs(weapon_showcase.weapon_displays) do
+        for item_id, display_id in pairs(item_ids) do
+            local world_se_obj = alife_object(display_id)
+            local data = utils_stpk.get_weapon_data(world_se_obj)
+            local remove_flags = 16
+            local flag_mask = bit_not(remove_flags)
+            data.object_flags = bit_and(data.object_flags, flag_mask)
+
+            utils_stpk.set_weapon_data(data, world_se_obj)
+        end
+    end
+end
+
 -- 2.1.X -> 2.2.0
 -- Release all world objects to migrate old saves to use the
 -- per-object spawning system instead
@@ -80,6 +98,10 @@ local migration_functions = {
     {
         version = "2.2.0",
         functor = migrate_world_objects,
+    },
+    {
+        version = "2.3.0",
+        functor = fix_racked_weapons,
     }
 }
 
