@@ -2,6 +2,7 @@
 ## Bug Fix
 - Fix bounding boxes of weapon racks (Thanks Rambito!)
   - Should be able to place them with collision enabled
+- Fix pickup with FDDA enabled, but without the pickup anim (Thanks GDI_Amiya!)
 
 # 2.3.0
 ## Features
