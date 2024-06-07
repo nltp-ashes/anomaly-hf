@@ -52,7 +52,7 @@ function bind_stalker_ext.actor_on_item_before_pickup(item)
 	if not is_pickupable then return false end -- respect pickupability as set by callback
 
 	start_pickup_delay(item)
-	return false
+	return true
 end
 
 function anim_delay()
