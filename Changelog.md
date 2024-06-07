@@ -1,3 +1,8 @@
+# 2.3.1
+## Bug Fix
+- Fix bounding boxes of weapon racks (Thanks Rambito!)
+  - Should be able to place them with collision enabled
+
 # 2.3.0
 ## Features
 - From Thial, add new wireframe preview gizmo for placement
