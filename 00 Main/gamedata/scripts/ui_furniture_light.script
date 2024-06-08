@@ -185,6 +185,7 @@ function toggle_light(obj_id)
 				utils_item.discharge(obj_item)
 			end
 			hf_obj_manager.update_data(obj_id, {is_on=true})
+			SendScriptCallback("hf_on_use_tool", obj_id, obj_item)
 			return
 		end
 	end
